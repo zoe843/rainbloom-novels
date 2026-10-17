@@ -12,3 +12,11 @@
 - 已查看桌面书架、手机书架、桌面正文与手机正文截图。
 
 验收范围为 Chromium 与上述屏幕尺寸，未使用实际 iPhone/Android 设备测试；阅读数据不提供自动跨设备同步。
+
+## 正式站复验
+
+- 地址：https://zoe843.github.io/rainbloom-novels/
+- 页面、目录和小说章节均已实际访问。正式站重复上述 89 项浏览器检查全部通过，无脚本错误、正常浏览无失败资源请求。
+- GitHub Actions 首次构建和部署成功：https://github.com/zoe843/rainbloom-novels/actions/runs/39026618040
+- 首次部署的功能代码提交：964bdd39312bfdbe7a5eb7b6a1af9980724b7882。
+- 本次只创建独立书阁，未修改个人网站。后续仅需在个人网站添加导航链接。
