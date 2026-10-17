@@ -15,13 +15,18 @@ export function parseChapter(source) {
   assert(/^#\s+\S/.test(heading), '章节第一行必须是 # 标题');
   const blocks = rest.join('\n').trim().split(/\n\s*\n/).filter(Boolean).map((s) => {
     const text = s.trim();
+    if (text.startsWith('![')) {
+      const image = text.match(/^!\[([^\]\r\n]+)\]\(([a-z0-9][a-z0-9-]*\.(?:webp|png|jpe?g))\)$/);
+      assert(image, '插图需使用 ![说明](本地图片文件名.webp)，不能使用外部或越界路径');
+      return { type: 'image', alt: image[1], src: image[2] };
+    }
     if (/^---+$/.test(text)) return { type: 'hr', text: '' };
     if (/^##\s/.test(text)) return { type: 'heading', text: text.replace(/^##\s+/, '') };
     if (/^>\s?/.test(text)) return { type: 'quote', text: text.replace(/^>\s?/gm, '').replace(/\n/g, ' ') };
     return { type: 'paragraph', text: text.replace(/\n/g, ' ') };
   });
   assert(blocks.some(b => b.type === 'paragraph' && string(b.text)), '章节不能没有正文');
-  const wordCount = [...blocks.map(b => b.text).join('').replace(/\s/g, '')].length;
+  const wordCount = [...blocks.map(b => b.text || '').join('').replace(/\*\*([^*]+)\*\*/g, '$1').replace(/\s/g, '')].length;
   return { title: heading.replace(/^#\s+/, ''), blocks, wordCount };
 }
 
@@ -39,7 +44,7 @@ async function build() {
     assert(/^\d{4}-\d{2}-\d{2}$/.test(book.updated) && !Number.isNaN(Date.parse(book.updated)), `${book.id} 日期无效`);
     assert(Array.isArray(book.tags) && book.tags.every(string), `${book.id} 标签无效`);
     assert(Array.isArray(book.chapters) && book.chapters.length > 0, `${book.id} 没有章节`);
-    assert(/^[a-z0-9-]+\.svg$/.test(book.cover), `${book.id} 书封路径无效`);
+    assert(/^[a-z0-9][a-z0-9-]*\.(?:svg|webp|png|jpe?g)$/.test(book.cover), `${book.id} 书封路径无效`);
     await readFile(path.join(root, 'assets', book.cover));
     const ids = new Set();
     const chapters = [];
@@ -48,6 +53,13 @@ async function build() {
       ids.add(ch.id);
       assert(string(ch.file) && /^[a-zA-Z0-9_-]+\.md$/.test(ch.file), `${book.id} 章节文件路径无效`);
       const parsed = parseChapter(await readFile(path.join(dir, ch.file), 'utf8'));
+      for (const block of parsed.blocks.filter(b => b.type === 'image')) {
+        const dimensions = book.images?.[block.src];
+        assert(dimensions && Number.isInteger(dimensions.width) && Number.isInteger(dimensions.height) && dimensions.width > 0 && dimensions.height > 0, `${book.id} 插图 ${block.src} 缺少有效长宽`);
+        await readFile(path.join(root, 'assets', block.src));
+        block.width = dimensions.width;
+        block.height = dimensions.height;
+      }
       chapters.push({ id: ch.id, title: parsed.title, wordCount: parsed.wordCount });
       chapterOutputs.push({ file: path.join(out, 'data', book.id, `${ch.id}.json`), data: { id: ch.id, ...parsed } });
     }

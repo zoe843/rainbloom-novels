@@ -17,3 +17,10 @@ dialog{color:var(--text);background:var(--surface);border:1px solid var(--line);
 /* Sticky reader controls sit above the text. A root scroll inset would make
    focusing these controls scroll the document while they remain pinned. */
 html{scroll-padding-top:0}
+.detail-cover img{aspect-ratio:480/660;object-fit:cover}
+.chapter-illustration{margin:2em 0 2.4em;text-indent:0;scroll-margin-top:90px}
+.chapter-illustration a{display:block;border-radius:3px;overflow:hidden;background:var(--surface)}
+.chapter-illustration img{display:block;width:100%;height:auto;object-fit:contain}
+.chapter-illustration figcaption{margin-top:12px;color:var(--muted);font-family:var(--sans);font-size:12px;line-height:1.8;letter-spacing:1px;text-align:center}
+.chapter-text strong{font-weight:600}
+.book-cover[src$="ditide-05.webp"],.detail-cover img[src$="ditide-05.webp"]{object-position:35% center}

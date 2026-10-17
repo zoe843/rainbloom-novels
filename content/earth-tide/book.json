@@ -1,0 +1,76 @@
+{
+  "id": "earth-tide",
+  "title": "地潮",
+  "author": "花庭藏稿",
+  "subtitle": "一台能看见一厘米的钟，和一个每年下沉三厘米的县。",
+  "description": "省计量院技术负责人沈青从光钟比对曲线中发现，一块熟悉的土地正在下沉。她追查数据的源头，也逐渐走近父亲记了二十八年的硬皮本。时间能测出毫米，却不能替人决定一个数字该如何说出口。",
+  "tags": [
+    "现实科幻",
+    "时间计量",
+    "地面沉降"
+  ],
+  "status": "已完结",
+  "updated": "2026-10-17",
+  "cover": "ditide-05.webp",
+  "sample": false,
+  "chapters": [
+    {
+      "id": "chapter-01",
+      "file": "01.md"
+    },
+    {
+      "id": "chapter-02",
+      "file": "02.md"
+    },
+    {
+      "id": "chapter-03",
+      "file": "03.md"
+    },
+    {
+      "id": "chapter-04",
+      "file": "04.md"
+    },
+    {
+      "id": "chapter-05",
+      "file": "05.md"
+    },
+    {
+      "id": "chapter-06",
+      "file": "06.md"
+    },
+    {
+      "id": "chapter-07",
+      "file": "07.md"
+    },
+    {
+      "id": "chapter-08",
+      "file": "08.md"
+    }
+  ],
+  "images": {
+    "ditide-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "ditide-02.webp": {
+      "width": 1536,
+      "height": 1024
+    },
+    "ditide-03.webp": {
+      "width": 1448,
+      "height": 1086
+    },
+    "ditide-04.webp": {
+      "width": 1536,
+      "height": 1024
+    },
+    "ditide-05.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "ditide-06.webp": {
+      "width": 1672,
+      "height": 940
+    }
+  }
+}

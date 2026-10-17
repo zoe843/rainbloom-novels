@@ -2,6 +2,7 @@ import { defaults, getState, persist, setSettings, saveRecord, addBookmark, remo
 
 const $ = (selector, root=document) => root.querySelector(selector);
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const inlineText = (v) => esc(v).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
 const icons = {
   arrow:'<path d="M5 12h14m-6-6 6 6-6 6"/>',
   back:'<path d="M19 12H5m6-6-6 6 6 6"/>',
@@ -57,7 +58,7 @@ function card(book) {
 }
 function renderShelf() {
   const latest=latestReading();
-  const first=catalog.find(b=>b.id==='rain-before-dawn')||catalog[0];
+  const first=catalog.find(b=>!b.sample)||catalog[0];
   const current=latest||first;
   const record=recordFor(current);
   const chapter=record&&current.chapters.find(c=>c.id===record.chapterId);
@@ -170,10 +171,11 @@ async function renderReader(book,chapter,routeId) {
   const previous=book.chapters[index-1],next=book.chapters[index+1];
   const content=data.blocks.map((b,i)=>{
     const attr=`data-block="${i}"`;
+    if(b.type==='image')return `<figure class="chapter-illustration" ${attr}><a href="./assets/${esc(b.src)}" target="_blank" rel="noopener" aria-label="查看插图大图：${esc(b.alt)}"><img src="./assets/${esc(b.src)}" alt="${esc(b.alt)}" width="${Number(b.width)}" height="${Number(b.height)}" loading="lazy" decoding="async"></a><figcaption>${esc(b.alt)}</figcaption></figure>`;
     if(b.type==='hr')return `<hr ${attr}>`;
     if(b.type==='heading')return `<h2 ${attr}>${esc(b.text)}</h2>`;
-    if(b.type==='quote')return `<blockquote ${attr}>${esc(b.text)}</blockquote>`;
-    return `<p ${attr}>${esc(b.text)}</p>`;
+    if(b.type==='quote')return `<blockquote ${attr}>${inlineText(b.text)}</blockquote>`;
+    return `<p ${attr}>${inlineText(b.text)}</p>`;
   }).join('');
   main.innerHTML=`<header class="reader-header"><div class="reader-header-left"><a class="reader-back" href="#/shelf" aria-label="返回书架">${icon('back')}书架</a><a class="reader-book-name" href="${bookHref(book)}" aria-label="查看《${esc(book.title)}》目录">${esc(book.title)}</a></div><div class="reader-header-actions"><button class="tool-button mobile-only" id="open-toc" aria-label="打开章节目录">${icon('list')}<span>目录</span></button><button class="tool-button" id="add-bookmark" aria-label="在当前位置添加书签">${icon('bookmark')}<span>书签</span></button><button class="tool-button" id="open-settings" aria-label="打开阅读设置">${icon('settings')}<span>设置</span></button></div></header><div class="reader-layout"><aside class="desktop-toc"><p class="small-label">章节目录</p><nav aria-label="章节目录">${toc(book,chapter.id)}</nav><p class="toc-summary">${esc(book.status)} · 共 ${book.chapters.length} 章<br>阅读位置会自动保存</p></aside><div class="reader-content"><article id="chapter-article"><header class="chapter-heading"><p>${esc(book.title)}</p><h1>${esc(chapter.title)}</h1><p class="chapter-info">第 ${index+1} / ${book.chapters.length} 章　${words(chapter.wordCount)}　约 ${Math.max(1,Math.ceil(chapter.wordCount/450))} 分钟</p></header><div class="chapter-text">${content}</div></article><div class="chapter-end"><span>${next?'这一章，先读到这里。':book.status==='已完结'?'故事完，灯还亮着。':'故事还在继续。'}</span><p>${next?'留一点余味，或继续翻下一章。':book.status==='已完结'?'谢谢你陪这个故事走到这里。':'下一章写好后，会放到这里。'}</p></div><nav class="chapter-navigation" aria-label="前后章节">${previous?button(readHref(book,previous.id),'上一章','secondary'):button(bookHref(book),'小说目录','secondary')}${next?button(readHref(book,next.id),'下一章'):button('#/shelf','回到书架','')}</nav></div></div><div class="reader-bottom"><div class="reader-position"><span>第 ${index+1} / ${book.chapters.length} 章</span><div class="progress-track" aria-hidden="true"><span id="chapter-progress-bar"></span></div><span id="chapter-progress">本章 0%</span></div><button class="text-button" id="back-to-top">回到章首</button></div>`;
   reader={book,chapter,article:$('#chapter-article'),ready:false,lastAnchor:null};
@@ -186,7 +188,7 @@ async function renderReader(book,chapter,routeId) {
     const existing=getState().bookmarks.some(b=>b.bookId===book.id&&b.chapterId===chapter.id&&b.anchorIndex===anchor.anchorIndex);
     if(existing){toast('这个段落已经留过书签了');return;}
     const block=data.blocks[anchor.anchorIndex];
-    addBookmark({id:crypto.randomUUID(),bookId:book.id,chapterId:chapter.id,...anchor,excerpt:(block?.text||chapter.title).slice(0,80),updatedAt:Date.now()});
+    addBookmark({id:crypto.randomUUID(),bookId:book.id,chapterId:chapter.id,...anchor,excerpt:(block?.text||block?.alt||chapter.title).slice(0,80),updatedAt:Date.now()});
     toast('书签已留好，可在阅读记录中查看');
   });
   $('#back-to-top').addEventListener('click',()=>window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'}));
@@ -278,7 +280,7 @@ async function boot() {
     const response=await fetch('./data/catalog.json');if(!response.ok)throw new Error();
     catalog=await response.json();if(!Array.isArray(catalog)||!catalog.length)throw new Error();
     // Put the opening story first without coupling later additions to folder order.
-    catalog.sort((a,b)=>b.updated.localeCompare(a.updated)||(a.id==='rain-before-dawn'?-1:b.id==='rain-before-dawn'?1:a.title.localeCompare(b.title,'zh-CN')));
+    catalog.sort((a,b)=>Number(Boolean(a.sample))-Number(Boolean(b.sample))||b.updated.localeCompare(a.updated)||(a.id==='rain-before-dawn'?-1:b.id==='rain-before-dawn'?1:a.title.localeCompare(b.title,'zh-CN')));
     await route();
   } catch {
     main.innerHTML=shell('<div class="empty"><h2>书架暂时没有打开</h2><p>检查网络后，再试一次。</p><button class="button secondary" id="retry-boot">重新加载</button></div>');

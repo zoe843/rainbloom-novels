@@ -23,6 +23,8 @@ jobs:
         with:
           node-version: '22'
       - uses: actions/configure-pages@v5
+      - name: Check content parser
+        run: npm test
       - name: Build and validate novel content
         run: npm run build
       - uses: actions/upload-pages-artifact@v4
