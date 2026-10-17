@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c1824">
+  <meta name="description" content="雨落花庭的小说书阁。把故事留在这里，在雨夜慢慢读。">
+  <title>书阁 · 雨落花庭</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/style.css">
+  <script type="module" src="./assets/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header" id="site-header">
+    <a class="brand" href="#/shelf" aria-label="雨落花庭书阁，返回书架"><img src="./assets/favicon.svg" width="40" height="40" alt=""><span>雨落花庭<span class="brand-divider"></span><small>书阁</small></span></a>
+    <nav class="site-nav" aria-label="主导航"><a href="#/shelf" data-nav="shelf">书架</a><a href="#/history" data-nav="history">阅读记录</a><a href="#/about" data-nav="about">关于</a></nav>
+    <a class="garden-link" href="https://rainbloom.xin/" aria-label="回到雨落花庭个人网站">回到花庭 <span aria-hidden="true">↗</span></a>
+  </header>
+  <main id="main" tabindex="-1"><div class="loading"><span class="loading-moon" aria-hidden="true">☾</span><p>正在打开书阁…</p></div></main>
+  <footer id="site-footer"><span>雨落花庭 · 书阁</span><span>留一盏灯，读一个故事。</span><a href="https://rainbloom.xin/">回到花庭</a></footer>
+  <dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-title">
+    <div class="dialog-heading"><h2 id="settings-title">阅读设置</h2><button type="button" class="icon-button" data-close aria-label="关闭阅读设置">×</button></div>
+    <form id="settings-form">
+      <fieldset><legend>阅读底色</legend><div class="theme-options"><label class="theme-option night-option"><input type="radio" name="theme" value="night">夜色</label><label class="theme-option paper-option"><input type="radio" name="theme" value="paper">纸色</label></div></fieldset>
+      <div class="range-field"><label for="font-size">字号 <output id="font-size-value"></output></label><input id="font-size" name="fontSize" type="range" min="18" max="28" step="1"></div>
+      <div class="range-field"><label for="line-height">行距 <output id="line-height-value"></output></label><input id="line-height" name="lineHeight" type="range" min="1.6" max="2.4" step="0.1"></div>
+      <div class="range-field"><label for="reading-width">正文宽度 <output id="reading-width-value"></output></label><input id="reading-width" name="width" type="range" min="560" max="900" step="20"></div>
+      <fieldset><legend>正文字体</legend><div class="font-options"><label><input type="radio" name="font" value="serif">宋体</label><label><input type="radio" name="font" value="sans">黑体</label></div></fieldset>
+      <p class="help-text">设置与阅读位置保存在当前浏览器。</p>
+      <button type="button" class="text-button" id="reset-settings">恢复默认设置</button>
+    </form>
+  </dialog>
+  <dialog id="toc-dialog" class="toc-dialog" aria-labelledby="toc-title"><div class="dialog-heading"><h2 id="toc-title">章节目录</h2><button type="button" class="icon-button" data-close aria-label="关闭章节目录">×</button></div><nav id="mobile-toc" aria-label="章节目录"></nav></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <input type="file" id="import-file" accept="application/json,.json" hidden>
+  <noscript><div class="noscript">请启用 JavaScript 后阅读。小说原文也可在 <a href="https://github.com/zoe843/rainbloom-novels/tree/main/content">GitHub 内容目录</a>中查看。</div></noscript>
+</body>
+</html>

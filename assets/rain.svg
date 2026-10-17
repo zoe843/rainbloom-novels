@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 660">
+<defs><linearGradient id="sky" x2=".8" y2="1"><stop stop-color="#506e7a"/><stop offset=".58" stop-color="#223e4c"/><stop offset="1" stop-color="#132b35"/></linearGradient><linearGradient id="water" x2="0" y2="1"><stop stop-color="#6b8b92"/><stop offset="1" stop-color="#243e48"/></linearGradient><pattern id="rain" width="46" height="90" patternUnits="userSpaceOnUse" patternTransform="rotate(13)"><path d="M5 0v20M30 44v26" stroke="#c4d9dc" stroke-opacity=".2"/></pattern><filter id="blur"><feGaussianBlur stdDeviation="8"/></filter></defs>
+<path fill="url(#sky)" d="M0 0h480v660H0z"/>
+<circle cx="335" cy="155" r="53" fill="#cbd6cc" opacity=".12" filter="url(#blur)"/><circle cx="335" cy="155" r="36" fill="#d1d7c5" opacity=".75"/><path d="M0 365 90 310l65 26 88-70 90 46 58-32 89 50v330H0Z" fill="#223d46"/><path d="m0 427 95-49 100 19 102-61 95 46 88-11v289H0Z" fill="#18333c"/><path d="M0 460c125-38 284-28 480-12v212H0Z" fill="url(#water)"/>
+<path d="M303 464h66m-95 17h109m-90 19h64m-26 20h59m-91 20h48" fill="none" stroke="#cdd5c4" stroke-opacity=".25" stroke-width="2"/>
+<path d="M0 528h158v12H0zm90 10h7v122h-7zm41 0h7v122h-7z" fill="#101f28"/><path d="M84 489c15-36 63-38 83 0-30-9-54-9-83 0Z" fill="#b5a4a5"/><path d="M125 484v51c0 6 8 7 9 1" fill="none" stroke="#172d37" stroke-width="3"/><path d="M124 499v34m-3-16-8 13m15-13 8 13" stroke="#152934" stroke-width="7" stroke-linecap="round"/>
+<path fill="url(#rain)" d="M0 0h480v660H0z"/>
+<path d="M27 28h426v604H27z" fill="none" stroke="#d3dfd6" stroke-opacity=".2"/>
+<text x="66" y="125" fill="#eef0e6" font-family="STSong,SimSun,serif" font-size="43" letter-spacing="9">雨停之前</text>
+<text x="71" y="164" fill="#d2dfdc" font-family="Microsoft YaHei,sans-serif" font-size="12" letter-spacing="4">有些信，只在下雨的时候寄达</text>
+<text x="240" y="606" text-anchor="middle" fill="#c6d1cb" font-family="STSong,SimSun,serif" font-size="14" letter-spacing="5">花庭藏书</text>
+</svg>

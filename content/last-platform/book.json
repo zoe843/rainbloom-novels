@@ -1,0 +1,16 @@
+{
+  "id": "last-platform",
+  "title": "末班月台",
+  "author": "花庭 · AI 示例",
+  "subtitle": "终点站之前，给自己一点时间。",
+  "description": "凌晨零点零七分，地铁驶过熟悉的站台，开进地图上不存在的车站。那里没有出口，只有一间替人保管未说出口的话的小小失物招领处。",
+  "tags": ["都市幻想", "夜行", "治愈"],
+  "status": "已完结",
+  "updated": "2026-10-17",
+  "cover": "platform.svg",
+  "sample": true,
+  "chapters": [
+    { "id": "unlisted-station", "file": "01.md" },
+    { "id": "a-place-to-go", "file": "02.md" }
+  ]
+}

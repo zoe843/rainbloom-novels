@@ -1,0 +1,17 @@
+{
+  "id": "rain-before-dawn",
+  "title": "雨停之前",
+  "author": "花庭 · AI 示例",
+  "subtitle": "有些信，只在下雨的时候寄达。",
+  "description": "旧城深处有一家只在雨夜营业的修伞铺。林晚接手它的第一天，收到了一封写给明天的信。信里没有署名，只有一句话：别让最后一班渡船靠岸。",
+  "tags": ["都市奇幻", "雨夜", "温柔悬疑"],
+  "status": "已完结",
+  "updated": "2026-10-17",
+  "cover": "rain.svg",
+  "sample": true,
+  "chapters": [
+    { "id": "the-letter", "file": "01.md" },
+    { "id": "the-ferry", "file": "02.md" },
+    { "id": "after-rain", "file": "03.md" }
+  ]
+}

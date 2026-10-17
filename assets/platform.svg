@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 660">
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#564c60"/><stop offset=".65" stop-color="#2e3348"/><stop offset="1" stop-color="#1c2938"/></linearGradient><radialGradient id="light"><stop stop-color="#efcf9e" stop-opacity=".5"/><stop offset="1" stop-color="#efcf9e" stop-opacity="0"/></radialGradient><linearGradient id="floor" x2="0" y2="1"><stop stop-color="#3f4757"/><stop offset="1" stop-color="#1e2938"/></linearGradient></defs>
+<path fill="url(#bg)" d="M0 0h480v660H0z"/><path d="M0 390h480v270H0z" fill="url(#floor)"/><path d="M0 437h480M0 481h480M0 544h480M65 660l126-270m48 270V390m174 270L287 390" stroke="#a2a1ab" opacity=".15"/>
+<path d="M310 225v285h13V225M303 220h28v11h-28" fill="#171f2e"/><path d="M317 192v29" stroke="#172130" stroke-width="4"/><path d="M291 215h52l-9 41h-34Z" fill="#ddc2a0"/><circle cx="317" cy="244" r="109" fill="url(#light)"/>
+<path d="M72 365h160v12H72zm15 10h7v53h-7zm123 0h7v53h-7z" fill="#19232f"/><path d="M77 334h149v23H77z" fill="#8b817d"/><path d="M76 340h151m-150 9h149" stroke="#564f55"/>
+<circle cx="364" cy="102" r="27" fill="none" stroke="#e4d9cc" stroke-opacity=".65"/><path d="M364 82v22l13 8" fill="none" stroke="#e4d9cc" stroke-width="2"/>
+<path d="M0 588h480m-480 12h480" stroke="#b3a797" stroke-opacity=".3"/><path d="M27 28h426v604H27z" fill="none" stroke="#dbd2d5" stroke-opacity=".2"/>
+<text x="66" y="125" fill="#f0e9e4" font-family="STSong,SimSun,serif" font-size="43" letter-spacing="9">末班月台</text>
+<text x="71" y="164" fill="#d2c9cd" font-family="Microsoft YaHei,sans-serif" font-size="12" letter-spacing="4">终点站之前，给自己一点时间</text>
+<text x="240" y="606" text-anchor="middle" fill="#ccc5cd" font-family="STSong,SimSun,serif" font-size="14" letter-spacing="5">花庭藏书</text>
+</svg>
