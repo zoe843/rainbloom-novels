@@ -105,6 +105,8 @@ GitHub 仓库的 **Actions → Publish the bookshelf** 显示绿色后，新版�
 
 ## 本地预览
 
+日常阅读直接打开上方的在线网址。双击源码或 `dist/` 的 `index.html` 会自动前往在线书阁，并保留章节地址。需要在本机检查尚未发布的修改时，请按下面步骤启动预览服务。
+
 需要 Node.js 22 或更新版本，无第三方运行依赖。
 
 ```powershell
@@ -121,6 +123,7 @@ npm run preview
 ## 文件职责
 
 - `assets/app.js`：路由、书架、详情、阅读与控件。
+- `assets/entry.js`：启动阅读应用；本地双击时跳到在线书阁；脚本加载失败时提供重试。
 - `assets/storage.js`：本地进度、书签、设置与记录合并。
 - `assets/style.css`：花庭视觉、响应式排版与阅读主题。
 - `scripts/build.mjs`：验证小说资料并生成目录和逐章 JSON。
