@@ -42,4 +42,3 @@
 - [x] 本地检查通过后创建 zoe843/rainbloom-novels 公开仓库，push main，启用 Pages。
 - [x] 等待 Actions 完成，核验正式站书架、章节、资源与深链刷新。
 - [x] 更新共享记忆，交付网址、仓库与维护文档。
-
