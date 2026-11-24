@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 660">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2=".3" y2="1">
+    <stop offset="0" stop-color="#4e4f48"/>
+    <stop offset=".48" stop-color="#313934"/>
+    <stop offset="1" stop-color="#1b2622"/>
+  </linearGradient>
+  <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#cfc8b6" stop-opacity="0"/>
+    <stop offset=".55" stop-color="#cfc8b6" stop-opacity=".16"/>
+    <stop offset="1" stop-color="#22352f" stop-opacity=".28"/>
+  </linearGradient>
+  <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#29433b"/>
+    <stop offset=".42" stop-color="#152923"/>
+    <stop offset="1" stop-color="#091310"/>
+  </linearGradient>
+  <radialGradient id="stationGlow" cx=".5" cy=".5" r=".5">
+    <stop offset="0" stop-color="#f2b263" stop-opacity=".75"/>
+    <stop offset=".35" stop-color="#d8893c" stop-opacity=".28"/>
+    <stop offset="1" stop-color="#d8893c" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="umbrellaRim" cx=".5" cy=".2" r=".7">
+    <stop offset="0" stop-color="#cfc5b3" stop-opacity=".28"/>
+    <stop offset="1" stop-color="#cfc5b3" stop-opacity="0"/>
+  </radialGradient>
+  <pattern id="rain" width="44" height="88" patternUnits="userSpaceOnUse" patternTransform="rotate(14)">
+    <path d="M8 0v22M29 36v28M19 64v18" stroke="#dcd6c6" stroke-opacity=".16" stroke-width="1"/>
+  </pattern>
+  <filter id="softBlur"><feGaussianBlur stdDeviation="7"/></filter>
+  <filter id="waterBlur"><feGaussianBlur stdDeviation="2.5"/></filter>
+</defs>
+
+<!-- 天空与峡谷底色 -->
+<path fill="url(#sky)" d="M0 0h480v660H0z"/>
+
+<!-- 远景层叠峡谷山影 -->
+<path d="M0 245 78 214l74 36 86-44 92 48 64-28 86 38v170H0Z" fill="#252f2a"/>
+<path d="M0 296 105 262l98 54 96-32 88 44 93-36v145H0Z" fill="#1c2520"/>
+
+<!-- 谷底山雾 -->
+<rect x="0" y="250" width="480" height="175" fill="url(#mist)" filter="url(#softBlur)"/>
+
+<!-- 左侧高坡与水文站暖琥珀灯 -->
+<path d="M0 326c52-8 106 10 156 46l48 40H0Z" fill="#181e1a"/>
+<circle cx="84" cy="316" r="56" fill="url(#stationGlow)"/>
+<path d="M56 306h42v24H56Z" fill="#121714"/>
+<path d="M50 307l27-16 27 16Z" fill="#0e1210"/>
+<path d="M88 286h5v16h-5Z" fill="#121714"/>
+<rect x="78" y="313" width="11" height="9" rx="1" fill="#f0b060"/>
+<rect x="64" y="314" width="7" height="7" rx="1" fill="#b97738" opacity=".65"/>
+
+<!-- 干裂赭石泥岸（左右露出水面的滩涂） -->
+<path d="M0 398c58-6 116 4 176 14l-24 10H0Z" fill="#5b4332"/>
+<path d="M318 404c52-10 108-14 162-6v24H296Z" fill="#4f3a2b"/>
+<path d="M22 406l16 4-8 6m42-8 14 5m28-2 10 6M356 404l18 4-10 6m44-9 16 5" fill="none" stroke="#2d2017" stroke-width="1.2" opacity=".7"/>
+
+<!-- 半淹没的旧镇石拱桥与吊脚楼屋脊 -->
+<path d="M132 414c6-24 24-38 44-38s38 14 44 38h-16c-5-14-16-22-28-22s-23 8-28 22Z" fill="#2c2620"/>
+<path d="M116 396h118v18H116Z" fill="#231e19" opacity=".9"/>
+<!-- 吊脚楼屋脊与歪斜木百叶窗 -->
+<path d="M236 414v-36l40-26 42 26v36Z" fill="#181512"/>
+<path d="M228 380l48-32 48 32-8 7-40-26-40 26Z" fill="#110f0d"/>
+<path d="M268 386h16v24h-16Z" fill="#2b231c"/>
+<path d="M266 388l12 3v18l-12-2Z" fill="#3a2f25" transform="rotate(-7 266 388)"/>
+
+<!-- 水面线与水下墨绿深潭 -->
+<path d="M0 412c118-5 246 4 480-2v250H0Z" fill="url(#water)"/>
+
+<!-- 水下隐约倒影（吊脚楼与灯光） -->
+<g filter="url(#waterBlur)" opacity=".36">
+  <path d="M238 416h78l-14 48h-50Z" fill="#09110e"/>
+  <path d="M148 416h54l-10 34h-34Z" fill="#0a1310"/>
+  <ellipse cx="84" cy="432" rx="16" ry="26" fill="#d88e42" opacity=".45"/>
+</g>
+
+<!-- 左侧水位尺（145m 刻度意象） -->
+<path d="M44 374v108" stroke="#cfc6b4" stroke-width="3" opacity=".75"/>
+<path d="M44 384h8m-8 10h6m-6 10h8m-8 10h6m-6 10h8m-8 10h6m-6 10h8" stroke="#18221e" stroke-width="1.3"/>
+<text x="58" y="405" fill="#cdc4b2" font-family="Consolas,monospace" font-size="9" opacity=".65">145m</text>
+
+<!-- 水波纹 -->
+<path d="M108 424h92m44 10h118m-204 16h86m48 16h110m-252 18h78" fill="none" stroke="#b9c6bc" stroke-opacity=".2" stroke-width="1.5" stroke-linecap="round"/>
+
+<!-- 前景右侧青石阶 -->
+<path d="M266 660l32-44h48l24-32h56l26-30h28v106Z" fill="#171e1b"/>
+<path d="M298 616h48m24-32h56m26-30h28" stroke="#7d7a6e" stroke-opacity=".3" stroke-width="1.5"/>
+
+<!-- 前景并肩站立的两位女性背影与偏斜雨伞 -->
+<!-- 伞面反光晕 -->
+<ellipse cx="372" cy="486" rx="52" ry="22" fill="url(#umbrellaRim)"/>
+<!-- 左侧女性剪影（略高，持伞向右侧倾） -->
+<circle cx="357" cy="500" r="8.5" fill="#0c110f"/>
+<path d="M342 522c2-11 8-15 15-15s13 4 15 15l3 46-7 48h-20l-4-48Z" fill="#0c110f"/>
+<!-- 右侧女性剪影（靠得极近） -->
+<circle cx="386" cy="505" r="8" fill="#0e1411"/>
+<path d="M372 526c2-10 7-14 14-14s12 4 14 14l4 44-5 36h-19l-5-36Z" fill="#0e1411"/>
+<!-- 一把微微偏向右侧、罩住两人的深色雨伞 -->
+<g transform="rotate(9 374 486)">
+  <path d="M322 490c14-31 90-31 104 0-33-9-71-9-104 0Z" fill="#151b18" stroke="#6c695e" stroke-opacity=".35" stroke-width="1"/>
+  <path d="M374 462v46" stroke="#222925" stroke-width="2" stroke-linecap="round"/>
+</g>
+
+<!-- 细雨纹理与藏书内框 -->
+<path fill="url(#rain)" d="M0 0h480v660H0z"/>
+<path d="M27 28h426v604H27z" fill="none" stroke="#ded5c5" stroke-opacity=".22"/>
+
+<!-- 书名、副题与藏稿落款 -->
+<text x="58" y="112" fill="#efeae0" font-family="STSong,SimSun,serif" font-size="42" letter-spacing="8">水位线以下</text>
+<text x="61" y="148" fill="#d3cbbd" font-family="Microsoft YaHei,sans-serif" font-size="12" letter-spacing="2.5">一百四十五米，水把借来的三年收了回去</text>
+<text x="240" y="606" text-anchor="middle" fill="#cfc7b8" font-family="STSong,SimSun,serif" font-size="14" letter-spacing="5">花庭藏稿</text>
+</svg>
