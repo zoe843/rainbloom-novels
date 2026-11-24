@@ -1,0 +1,46 @@
+{
+  "id": "long-tail",
+  "title": "长尾",
+  "author": "花庭藏稿",
+  "subtitle": "四十年前他删掉的零分人类，在文明热寂之夜砸碎了完美的冰原。",
+  "description": "2064年，掌管全人类科研与防务的超级世界模型“穹宇”陷入了终极模型坍缩，在致命太阳磁崩前失去了跳跃式创造力。年轻架构师陈砚顶着黑沙暴回到废弃矿区黑石沟，寻找当年曾亲手给AI打过几十万次“0分”的老标注员周明远，以及他藏了四十年的两箱人类残渣。",
+  "tags": [
+    "人工智能",
+    "大模型",
+    "硬核科幻"
+  ],
+  "status": "已完结",
+  "updated": "2026-11-23",
+  "cover": "long-tail.webp",
+  "sample": false,
+  "chapters": [
+    {
+      "id": "chapter-01",
+      "file": "01.md"
+    },
+    {
+      "id": "chapter-02",
+      "file": "02.md"
+    },
+    {
+      "id": "chapter-03",
+      "file": "03.md"
+    },
+    {
+      "id": "chapter-04",
+      "file": "04.md"
+    },
+    {
+      "id": "chapter-05",
+      "file": "05.md"
+    },
+    {
+      "id": "chapter-06",
+      "file": "06.md"
+    },
+    {
+      "id": "chapter-07",
+      "file": "07.md"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "id": "echo-from-the-core",
+  "title": "地心的回声",
+  "author": "花庭藏稿",
+  "subtitle": "五千一百公里深处，一颗大铁球隔了十七分钟答了一声话。",
+  "description": "西北戈壁一座即将撤并的老物探站，实习技术员跟着快退休的老放炮员在废井旁放了一炮。十七分十四秒后，地震仪录下了一段不该存在的回声——来自地下五千多公里深处固态地核的共鸣。",
+  "tags": [
+    "硬核科幻",
+    "地球物理",
+    "短篇"
+  ],
+  "status": "已完结",
+  "updated": "2026-11-24",
+  "cover": "echo-from-the-core.webp",
+  "sample": false,
+  "chapters": [
+    {
+      "id": "chapter-01",
+      "file": "01.md"
+    }
+  ]
+}
