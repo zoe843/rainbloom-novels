@@ -10,7 +10,7 @@
     "硬核科幻"
   ],
   "status": "已完结",
-  "updated": "2026-11-23",
+  "updated": "2026-11-24",
   "cover": "long-tail.webp",
   "sample": false,
   "chapters": [
@@ -42,5 +42,15 @@
       "id": "chapter-07",
       "file": "07.md"
     }
-  ]
+  ],
+  "images": {
+    "long-tail-scene-storm.webp": {
+      "width": 1536,
+      "height": 1024
+    },
+    "long-tail-scene-ice.webp": {
+      "width": 1536,
+      "height": 1024
+    }
+  }
 }

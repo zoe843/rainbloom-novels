@@ -18,5 +18,15 @@
       "id": "chapter-01",
       "file": "01.md"
     }
-  ]
+  ],
+  "images": {
+    "echo-from-the-core-scene-gobi.webp": {
+      "width": 1536,
+      "height": 1024
+    },
+    "echo-from-the-core-scene-core.webp": {
+      "width": 1536,
+      "height": 1024
+    }
+  }
 }

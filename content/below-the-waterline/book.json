@@ -18,5 +18,15 @@
       "id": "chapter-01",
       "file": "01.md"
     }
-  ]
+  ],
+  "images": {
+    "below-the-waterline-scene-old-town.webp": {
+      "width": 1536,
+      "height": 1024
+    },
+    "below-the-waterline-scene-umbrella.webp": {
+      "width": 1536,
+      "height": 1024
+    }
+  }
 }

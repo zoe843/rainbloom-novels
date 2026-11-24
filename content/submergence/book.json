@@ -30,5 +30,15 @@
       "id": "chapter-04",
       "file": "04.md"
     }
-  ]
+  ],
+  "images": {
+    "submergence-scene-fins.webp": {
+      "width": 1536,
+      "height": 1024
+    },
+    "submergence-scene-island.webp": {
+      "width": 1536,
+      "height": 1024
+    }
+  }
 }
