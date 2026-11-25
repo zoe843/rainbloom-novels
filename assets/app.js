@@ -25,6 +25,17 @@ let saveTimer;
 let scrollFrame;
 let pendingAnchor=null;
 const chapterCache=new Map();
+const isMountedUnderGarden = location.pathname.startsWith('/books');
+const gardenHref = () => (isMountedUnderGarden ? '/' : 'https://www.rainbloom.xin/');
+if (isMountedUnderGarden) {
+  const gardenLink = $('.garden-link');
+  if (gardenLink) {
+    gardenLink.href = '/';
+    gardenLink.innerHTML = '<span aria-hidden="true" style="padding:0 6px 0 0">←</span>回到花庭';
+  }
+  const footerLink = $('#site-footer a');
+  if (footerLink) footerLink.href = '/';
+}
 $('.skip-link').addEventListener('click',e=>{e.preventDefault();main.focus();main.scrollIntoView();});
 $('#mobile-toc').addEventListener('click',e=>{if(e.target.closest('a'))tocDialog.close();});
 
@@ -54,7 +65,7 @@ function latestReading() {
   return catalog.filter(b=>recordFor(b)).sort((a,b)=>recordFor(b).updatedAt-recordFor(a).updatedAt)[0];
 }
 function card(book) {
-  return `<article class="book-card"><a class="book-cover-link" href="${bookHref(book)}" aria-label="查看《${esc(book.title)}》简介与目录"><img class="book-cover" src="./assets/${esc(book.cover)}" width="480" height="660" alt="《${esc(book.title)}》书封"></a><div class="book-info"><div class="book-meta"><span>${esc(book.status)}</span><span>${words(book.wordCount)}</span>${book.sample?'<span class="sample">示例短篇</span>':''}</div><h3><a href="${bookHref(book)}">${esc(book.title)}</a></h3><p class="book-description">${esc(book.description)}</p>${tags(book)}<div class="book-bottom"><a class="read-link" href="${continueHref(book)}">${recordFor(book)?'继续阅读':'开始阅读'}${icon('arrow')}</a><time datetime="${esc(book.updated)}">${shortDate(book.updated)} 更新</time></div></div></article>`;
+  return `<article class="book-card"><a class="book-cover-link" href="${bookHref(book)}" aria-label="查看《${esc(book.title)}》简介与目录"><img class="book-cover" src="./assets/${esc(book.cover)}" width="480" height="660" loading="lazy" decoding="async" alt="《${esc(book.title)}》书封"></a><div class="book-info"><div class="book-meta"><span>${esc(book.status)}</span><span>${words(book.wordCount)}</span>${book.sample?'<span class="sample">示例短篇</span>':''}</div><h3><a href="${bookHref(book)}">${esc(book.title)}</a></h3><p class="book-description">${esc(book.description)}</p>${tags(book)}<div class="book-bottom"><a class="read-link" href="${continueHref(book)}">${recordFor(book)?'继续阅读':'开始阅读'}${icon('arrow')}</a><time datetime="${esc(book.updated)}">${shortDate(book.updated)} 更新</time></div></div></article>`;
 }
 function renderShelf() {
   const latest=latestReading();
@@ -99,7 +110,7 @@ const $$ = (selector, root=document) => [...root.querySelectorAll(selector)];
 function renderAbout() {
   const samples=catalog.filter(b=>b.sample);
   const sampleNote=samples.length?`书架上的${samples.map(b=>`《${esc(b.title)}》`).join('、')}是为展示阅读体验创作的 AI 示例短篇。它们是这间书阁最初的住客，之后可以换成自己的故事。`:'这里的小说由站外创作、整理后放入书架。新章节会随故事的进展慢慢更新。';
-  main.innerHTML=shell(`<div class="page-heading"><h1>关于书阁</h1><p>花庭里，一间留给故事的房间。</p></div><div class="about-content"><p class="quote">留一盏灯，读一个故事。</p><p>有些故事适合在夜里读。窗外有一点雨声，手边有一杯热茶，不用赶时间，也不必一口气读完。</p><p>这间书阁收着 AI 写下的小说。故事在别处慢慢写好，再被放到这里。你只需要挑一本，翻开，然后在喜欢的地方停一会儿。</p><h2>关于这些故事</h2><p>${sampleNote}</p><h2>替你记住读到哪里</h2><p>阅读时会自动保存章节与位置。字号、行距、正文宽度、字体和阅读底色都可以调整；喜欢的段落旁，也可以留下一枚书签。</p><p>这些记录只保存在当前浏览器。换手机或电脑时，可以在<a href="#/history">阅读记录</a>中导出，再到另一台设备导入。清理浏览器数据前也建议留一份备份。</p><h2>回到花庭</h2><p>小说读累了，也可以回到<a href="https://rainbloom.xin/">雨落花庭</a>坐坐，看看随笔、照片和最近的日常。</p></div>`);
+  main.innerHTML=shell(`<div class="page-heading"><h1>关于书阁</h1><p>花庭里，一间留给故事的房间。</p></div><div class="about-content"><p class="quote">留一盏灯，读一个故事。</p><p>有些故事适合在夜里读。窗外有一点雨声，手边有一杯热茶，不用赶时间，也不必一口气读完。</p><p>这间书阁收着 AI 写下的小说。故事在别处慢慢写好，再被放到这里。你只需要挑一本，翻开，然后在喜欢的地方停一会儿。</p><h2>关于这些故事</h2><p>${sampleNote}</p><h2>替你记住读到哪里</h2><p>阅读时会自动保存章节与位置。字号、行距、正文宽度、字体和阅读底色都可以调整；喜欢的段落旁，也可以留下一枚书签。</p><p>这些记录只保存在当前浏览器。换手机或电脑时，可以在<a href="#/history">阅读记录</a>中导出，再到另一台设备导入。清理浏览器数据前也建议留一份备份。</p><h2>回到花庭</h2><p>小说读累了，也可以回到<a href="${gardenHref()}">雨落花庭</a>坐坐，看看随笔、照片和最近的日常。</p></div>`);
 }
 function renderError(message, retry=false) {
   main.innerHTML=shell(`<div class="empty"><h2>这一页暂时没有打开</h2><p>${esc(message)}</p>${retry?'<button class="button secondary" id="retry-page">重新加载</button>':button('#/shelf','回到书架','secondary')}</div>`);
