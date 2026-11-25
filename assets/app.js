@@ -119,7 +119,7 @@ function renderError(message, retry=false) {
 function toc(book,current) { return `<div class="toc-links">${book.chapters.map(c=>`<a href="${readHref(book,c.id)}"${c.id===current?' aria-current="page"':''}>${esc(c.title)}</a>`).join('')}</div>`; }
 function applySettings() {
   const s=getState().settings;
-  document.body.classList.toggle('paper',Boolean(reader)&&s.theme==='paper');
+  document.body.classList.toggle('night',Boolean(reader)&&s.theme==='night');
   const root=document.documentElement;
   root.style.setProperty('--reading-size',`${s.fontSize}px`);
   root.style.setProperty('--reading-leading',s.lineHeight);
@@ -174,7 +174,7 @@ async function renderReader(book,chapter,routeId) {
       chapterCache.set(key,data);
     }
   } catch {
-    if(routeId===serial){document.body.classList.remove('reading','paper');renderError('章节暂时加载失败。检查网络后可以重新试一次。',true);}return;
+    if(routeId===serial){document.body.classList.remove('reading','night');renderError('章节暂时加载失败。检查网络后可以重新试一次。',true);}return;
   }
   if(routeId!==serial)return;
   document.body.classList.add('reading');
@@ -253,7 +253,7 @@ async function route() {
   const routeId=++serial;
   main.setAttribute('aria-busy','true');
   settingsDialog.close();tocDialog.close();
-  document.body.classList.remove('reading','paper');
+  document.body.classList.remove('reading','night');
   const parts=location.hash.replace(/^#\/?/,'').split('/').filter(Boolean);
   const type=parts[0]||'shelf';
   $$('[data-nav]').forEach(a=>{if(a.dataset.nav===type||(type==='book'&&a.dataset.nav==='shelf'))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});

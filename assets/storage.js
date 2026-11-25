@@ -1,5 +1,5 @@
 const KEY = 'rainbloom-reading-v1';
-export const defaults = { theme:'night', fontSize:21, lineHeight:2, width:720, font:'serif' };
+export const defaults = { theme:'paper', fontSize:21, lineHeight:2, width:720, font:'serif' };
 const idPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const finite = (n, min, max, fallback) => Number.isFinite(n) && n>=min && n<=max ? n : fallback;
 const safeId = (s) => typeof s === 'string' && idPattern.test(s);
@@ -7,7 +7,7 @@ export function sanitize(input) {
   const result = { version:1, settings:{...defaults}, records:{}, bookmarks:[] };
   if (!input || typeof input !== 'object' || Array.isArray(input)) return result;
   const s = input.settings || {};
-  result.settings = { theme:s.theme==='paper'?'paper':'night', font:s.font==='sans'?'sans':'serif', fontSize:finite(s.fontSize,18,28,21), lineHeight:finite(s.lineHeight,1.6,2.4,2), width:finite(s.width,560,900,720) };
+  result.settings = { theme:s.theme==='night'?'night':'paper', font:s.font==='sans'?'sans':'serif', fontSize:finite(s.fontSize,18,28,21), lineHeight:finite(s.lineHeight,1.6,2.4,2), width:finite(s.width,560,900,720) };
   if (input.records && typeof input.records==='object' && !Array.isArray(input.records)) {
     for (const [id,r] of Object.entries(input.records).slice(0,2000)) {
       if (!safeId(id) || !r || !safeId(r.chapterId)) continue;
