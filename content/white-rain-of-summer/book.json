@@ -1,0 +1,236 @@
+{
+  "id": "white-rain-of-summer",
+  "title": "白雨止于盛夏",
+  "author": "花庭藏稿",
+  "subtitle": "那场落于烈日之下的冰凉白雨，把十年前沉没的旧村与她的命一起锁在了水底。",
+  "description": "二十岁的桐生朔乘单轨电车穿过长隧道回到深山孤村雾见乡，与相隔十年的双胞胎妹妹桐生纱雪重逢。翠镜水库二期将于八月三十一日合闸蓄水，彻底淹没谷底旧村——而十年前在洪水中被锁住时间的纱雪，生命也将在白雨断绝之日随之停摆。在最后的盛夏里，与旧友相泽柚叶、黑川迅、高城玲一同直面沉水真相，两人在烈日、夏祭与台风洪流中撕开宿命，驶向属于九月的晴空。",
+  "tags": [
+    "日系轻文学",
+    "盛夏悬疑",
+    "长篇"
+  ],
+  "status": "已完结",
+  "updated": "2026-11-25",
+  "cover": "white-rain-of-summer.webp",
+  "sample": false,
+  "chapters": [
+    {
+      "id": "chapter-01",
+      "file": "01.md"
+    },
+    {
+      "id": "chapter-02",
+      "file": "02.md"
+    },
+    {
+      "id": "chapter-03",
+      "file": "03.md"
+    },
+    {
+      "id": "chapter-04",
+      "file": "04.md"
+    },
+    {
+      "id": "chapter-05",
+      "file": "05.md"
+    },
+    {
+      "id": "chapter-06",
+      "file": "06.md"
+    },
+    {
+      "id": "chapter-07",
+      "file": "07.md"
+    },
+    {
+      "id": "chapter-08",
+      "file": "08.md"
+    },
+    {
+      "id": "chapter-09",
+      "file": "09.md"
+    },
+    {
+      "id": "chapter-10",
+      "file": "10.md"
+    },
+    {
+      "id": "chapter-11",
+      "file": "11.md"
+    },
+    {
+      "id": "chapter-12",
+      "file": "12.md"
+    },
+    {
+      "id": "chapter-13",
+      "file": "13.md"
+    }
+  ],
+  "images": {
+    "white-rain-01-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-01-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-01-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-02-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-02-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-02-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-03-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-03-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-03-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-04-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-04-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-04-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-05-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-05-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-05-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-06-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-06-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-06-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-06-04.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-07-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-07-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-07-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-08-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-08-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-08-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-09-01.webp": {
+      "width": 1671,
+      "height": 941
+    },
+    "white-rain-09-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-09-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-10-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-10-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-10-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-11-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-11-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-11-03.webp": {
+      "width": 1671,
+      "height": 941
+    },
+    "white-rain-12-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-12-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-12-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-12-04.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-13-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-13-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "white-rain-13-03.webp": {
+      "width": 1672,
+      "height": 941
+    }
+  }
+}
