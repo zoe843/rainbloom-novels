@@ -25,6 +25,7 @@ let saveTimer;
 let scrollFrame;
 let pendingAnchor=null;
 const chapterCache=new Map();
+const chapterInFlight=new Map();
 const isMountedUnderGarden = location.pathname.startsWith('/books');
 const gardenHref = () => (isMountedUnderGarden ? '/' : 'https://www.rainbloom.xin/');
 if (isMountedUnderGarden) {
@@ -64,8 +65,10 @@ function shell(content) { return `<div class="page-shell">${content}</div>`; }
 function latestReading() {
   return catalog.filter(b=>recordFor(b)).sort((a,b)=>recordFor(b).updatedAt-recordFor(a).updatedAt)[0];
 }
-function card(book) {
-  return `<article class="book-card"><a class="book-cover-link" href="${bookHref(book)}" aria-label="查看《${esc(book.title)}》简介与目录"><img class="book-cover" src="./assets/${esc(book.cover)}" width="480" height="660" loading="lazy" decoding="async" alt="《${esc(book.title)}》书封"></a><div class="book-info"><div class="book-meta"><span>${esc(book.status)}</span><span>${words(book.wordCount)}</span>${book.sample?'<span class="sample">示例短篇</span>':''}</div><h3><a href="${bookHref(book)}">${esc(book.title)}</a></h3><p class="book-description">${esc(book.description)}</p>${tags(book)}<div class="book-bottom"><a class="read-link" href="${continueHref(book)}">${recordFor(book)?'继续阅读':'开始阅读'}${icon('arrow')}</a><time datetime="${esc(book.updated)}">${shortDate(book.updated)} 更新</time></div></div></article>`;
+function card(book,index=0) {
+  const coverSrc=book.coverThumb||book.cover;
+  const imgAttrs=index<4?(index<2?'loading="eager" fetchpriority="high"':'loading="eager"'):'loading="lazy"';
+  return `<article class="book-card"><a class="book-cover-link" href="${bookHref(book)}" aria-label="查看《${esc(book.title)}》简介与目录"><img class="book-cover" src="./assets/${esc(coverSrc)}" width="480" height="660" ${imgAttrs} decoding="async" alt="《${esc(book.title)}》书封"></a><div class="book-info"><div class="book-meta"><span>${esc(book.status)}</span><span>${words(book.wordCount)}</span>${book.sample?'<span class="sample">示例短篇</span>':''}</div><h3><a href="${bookHref(book)}">${esc(book.title)}</a></h3><p class="book-description">${esc(book.description)}</p>${tags(book)}<div class="book-bottom"><a class="read-link" href="${continueHref(book)}">${recordFor(book)?'继续阅读':'开始阅读'}${icon('arrow')}</a><time datetime="${esc(book.updated)}">${shortDate(book.updated)} 更新</time></div></div></article>`;
 }
 function renderShelf() {
   const latest=latestReading();
@@ -74,18 +77,19 @@ function renderShelf() {
   const record=recordFor(current);
   const chapter=record&&current.chapters.find(c=>c.id===record.chapterId);
   const shelfNote=catalog.some(b=>b.sample)?'标为“示例短篇”的故事，可以用来试试这间书阁的阅读体验。':'喜欢的故事，留在这里慢慢读完。';
-  main.innerHTML=shell(`<section class="hero"><div class="hero-copy"><h1 class="hero-title">雨声在窗外，<br>故事在此处。</h1><p>把喜欢的故事收进花庭。<br>从上次停下的那一页，慢慢读下去。</p><div class="hero-note">今夜，读一个故事。</div></div><div class="continue-panel"><span class="small-label">${latest?'接着上次读':'从这里翻开'}</span><h2>${esc(current.title)}</h2><p>${chapter?`${esc(chapter.title)} · 已读 ${percentage(current,record)}%`:esc(current.subtitle)}</p>${button(continueHref(current),latest?'继续阅读':'开始阅读','')}</div></section><section aria-labelledby="shelf-title"><div class="section-bar"><div class="section-heading"><h2 id="shelf-title">我的书架</h2><span>${catalog.length} 本藏书</span></div><label class="search-wrap">${icon('search')}<input id="book-search" class="search-input" type="search" placeholder="找一本书、一种心情" aria-label="搜索书名、简介或题材" autocomplete="off"></label></div><div class="book-grid" id="book-grid">${catalog.map(card).join('')}</div><p id="search-result" class="sr-only" aria-live="polite"></p></section><div class="shelf-note"><p>${shelfNote}</p><a href="#/about">关于这间书阁</a></div>`);
+  main.innerHTML=shell(`<section class="hero"><div class="hero-copy"><h1 class="hero-title">雨声在窗外，<br>故事在此处。</h1><p>把喜欢的故事收进花庭。<br>从上次停下的那一页，慢慢读下去。</p><div class="hero-note">今夜，读一个故事。</div></div><div class="continue-panel"><span class="small-label">${latest?'接着上次读':'从这里翻开'}</span><h2>${esc(current.title)}</h2><p>${chapter?`${esc(chapter.title)} · 已读 ${percentage(current,record)}%`:esc(current.subtitle)}</p>${button(continueHref(current),latest?'继续阅读':'开始阅读','')}</div></section><section aria-labelledby="shelf-title"><div class="section-bar"><div class="section-heading"><h2 id="shelf-title">我的书架</h2><span>${catalog.length} 本藏书</span></div><label class="search-wrap">${icon('search')}<input id="book-search" class="search-input" type="search" placeholder="找一本书、一种心情" aria-label="搜索书名、简介或题材" autocomplete="off"></label></div><div class="book-grid" id="book-grid">${catalog.map((b,i)=>card(b,i)).join('')}</div><p id="search-result" class="sr-only" aria-live="polite"></p></section><div class="shelf-note"><p>${shelfNote}</p><a href="#/about">关于这间书阁</a></div>`);
   $('#book-search').addEventListener('input',(e)=>{
     const query=e.target.value.trim().toLocaleLowerCase();
     const books=catalog.filter(b=>[b.title,b.description,...b.tags].join(' ').toLocaleLowerCase().includes(query));
-    $('#book-grid').innerHTML=books.length?books.map(card).join(''):'<div class="empty"><h2>还没有找到这本书</h2><p>换个书名或题材试试，也可以清空搜索看看全部藏书。</p><button class="button secondary" id="clear-search">查看全部</button></div>';
+    $('#book-grid').innerHTML=books.length?books.map((b,i)=>card(b,i)).join(''):'<div class="empty"><h2>还没有找到这本书</h2><p>换个书名或题材试试，也可以清空搜索看看全部藏书。</p><button class="button secondary" id="clear-search">查看全部</button></div>';
     $('#search-result').textContent=`找到 ${books.length} 本书`;
     $('#clear-search')?.addEventListener('click',()=>{const input=$('#book-search');input.value='';input.dispatchEvent(new Event('input'));input.focus();});
   });
 }
 function renderDetail(book) {
   const record=recordFor(book);
-  main.innerHTML=shell(`${backLink('#/shelf','返回书架')}<section class="detail-hero"><div class="detail-cover"><img src="./assets/${esc(book.cover)}" width="480" height="660" alt="《${esc(book.title)}》书封"></div><div class="detail-content"><h1>${esc(book.title)}</h1><p class="detail-subtitle">${esc(book.subtitle)}</p><p class="detail-author">${esc(book.author)}<span aria-hidden="true">　</span>${esc(book.status)}<span aria-hidden="true">　</span>${words(book.wordCount)}</p>${tags(book)}<div class="detail-actions">${button(continueHref(book),record?'继续阅读':'开始阅读')}${record?button(readHref(book),'从头阅读','secondary'):''}</div></div><div class="detail-description-full"><p class="detail-description">${esc(book.description)}</p>${book.sample?'<p class="sample-note">这是一篇为书阁制作的 AI 示例短篇，用于体验阅读功能。</p>':''}</div></section><section aria-labelledby="catalog-title"><div class="section-bar"><div class="section-heading"><h2 id="catalog-title">章节目录</h2><span>共 ${book.chapters.length} 章</span></div><span class="small-label">${shortDate(book.updated)} 更新</span></div><ol class="chapter-list">${book.chapters.map(c=>`<li><a href="${readHref(book,c.id)}"><span>${esc(c.title)}${record?.chapterId===c.id?' <span class="reading-here">· 上次读到</span>':''}</span><small>${words(c.wordCount)}</small></a></li>`).join('')}</ol></section>`);
+  const coverSrc=book.coverThumb||book.cover;
+  main.innerHTML=shell(`${backLink('#/shelf','返回书架')}<section class="detail-hero"><div class="detail-cover"><img src="./assets/${esc(coverSrc)}" width="480" height="660" alt="《${esc(book.title)}》书封"></div><div class="detail-content"><h1>${esc(book.title)}</h1><p class="detail-subtitle">${esc(book.subtitle)}</p><p class="detail-author">${esc(book.author)}<span aria-hidden="true">　</span>${esc(book.status)}<span aria-hidden="true">　</span>${words(book.wordCount)}</p>${tags(book)}<div class="detail-actions">${button(continueHref(book),record?'继续阅读':'开始阅读')}${record?button(readHref(book),'从头阅读','secondary'):''}</div></div><div class="detail-description-full"><p class="detail-description">${esc(book.description)}</p>${book.sample?'<p class="sample-note">这是一篇为书阁制作的 AI 示例短篇，用于体验阅读功能。</p>':''}</div></section><section aria-labelledby="catalog-title"><div class="section-bar"><div class="section-heading"><h2 id="catalog-title">章节目录</h2><span>共 ${book.chapters.length} 章</span></div><span class="small-label">${shortDate(book.updated)} 更新</span></div><ol class="chapter-list">${book.chapters.map(c=>`<li><a href="${readHref(book,c.id)}"><span>${esc(c.title)}${record?.chapterId===c.id?' <span class="reading-here">· 上次读到</span>':''}</span><small>${words(c.wordCount)}</small></a></li>`).join('')}</ol></section>`);
   if (record) {
     const firstLink=$('.detail-actions a.secondary');
     firstLink?.addEventListener('click',()=>{pendingAnchor={bookId:book.id,chapterId:book.chapters[0].id,record:{anchorIndex:0,anchorOffset:0,ratio:0}};});
@@ -94,7 +98,7 @@ function renderDetail(book) {
 function renderHistory() {
   const books=catalog.filter(b=>recordFor(b)).sort((a,b)=>recordFor(b).updatedAt-recordFor(a).updatedAt);
   const marks=getState().bookmarks.filter(m=>bookById(m.bookId)?.chapters.some(c=>c.id===m.chapterId));
-  main.innerHTML=shell(`<div class="page-heading"><h1>阅读记录</h1><p>故事读到了哪里，替你留在这里。</p></div><section class="history-section"><h2>最近读过</h2>${books.length?books.map(b=>{const r=recordFor(b),c=b.chapters.find(c=>c.id===r.chapterId);return `<article class="history-row"><a href="${bookHref(b)}" aria-label="${esc(b.title)}目录"><img src="./assets/${esc(b.cover)}" alt="" width="54" height="74"></a><div class="history-body"><h3><a href="${bookHref(b)}">${esc(b.title)}</a></h3><p>${esc(c.title)} · 已读 ${percentage(b,r)}% · ${dateLabel(r.updatedAt)}</p><div class="progress-track" aria-hidden="true"><span style="width:${percentage(b,r)}%"></span></div></div>${button(continueHref(b),'继续读','secondary')}</article>`;}).join(''):'<div class="history-empty">还没开始阅读。<a class="read-link" href="#/shelf">去书架翻开一本书</a>，下次会记得你读到的地方。</div>'}</section><section class="history-section"><h2>我的书签 <span class="small-label">${marks.length?marks.length:''}</span></h2>${marks.length?marks.map(m=>{const b=bookById(m.bookId),c=b.chapters.find(c=>c.id===m.chapterId);return `<article class="bookmark-row"><a href="${readHref(b,m.chapterId)}" data-bookmark="${esc(m.id)}"><h3>${esc(b.title)}<span class="small-label">　${esc(c.title)}</span></h3><p>${esc(m.excerpt)||'已保存的阅读位置'}</p></a><button class="icon-button" data-delete-bookmark="${esc(m.id)}" aria-label="删除《${esc(b.title)}》的这条书签">${icon('trash')}</button></article>`;}).join(''):'<p class="history-empty">读到想留下的地方，点阅读页右上角的书签。</p>'}</section><div class="record-tools"><button class="button secondary" id="export-records">导出阅读记录</button><button class="button secondary" id="import-records">导入阅读记录</button></div><p class="help-text">阅读进度、书签和设置只保存在当前浏览器，不会自动跨设备同步。<br>换设备或清理浏览器前，可以导出记录；在新设备导入即可继续读。</p>`);
+  main.innerHTML=shell(`<div class="page-heading"><h1>阅读记录</h1><p>故事读到了哪里，替你留在这里。</p></div><section class="history-section"><h2>最近读过</h2>${books.length?books.map(b=>{const r=recordFor(b),c=b.chapters.find(c=>c.id===r.chapterId);return `<article class="history-row"><a href="${bookHref(b)}" aria-label="${esc(b.title)}目录"><img src="./assets/${esc(b.coverThumb||b.cover)}" alt="" width="54" height="74"></a><div class="history-body"><h3><a href="${bookHref(b)}">${esc(b.title)}</a></h3><p>${esc(c.title)} · 已读 ${percentage(b,r)}% · ${dateLabel(r.updatedAt)}</p><div class="progress-track" aria-hidden="true"><span style="width:${percentage(b,r)}%"></span></div></div>${button(continueHref(b),'继续读','secondary')}</article>`;}).join(''):'<div class="history-empty">还没开始阅读。<a class="read-link" href="#/shelf">去书架翻开一本书</a>，下次会记得你读到的地方。</div>'}</section><section class="history-section"><h2>我的书签 <span class="small-label">${marks.length?marks.length:''}</span></h2>${marks.length?marks.map(m=>{const b=bookById(m.bookId),c=b.chapters.find(c=>c.id===m.chapterId);return `<article class="bookmark-row"><a href="${readHref(b,m.chapterId)}" data-bookmark="${esc(m.id)}"><h3>${esc(b.title)}<span class="small-label">　${esc(c.title)}</span></h3><p>${esc(m.excerpt)||'已保存的阅读位置'}</p></a><button class="icon-button" data-delete-bookmark="${esc(m.id)}" aria-label="删除《${esc(b.title)}》的这条书签">${icon('trash')}</button></article>`;}).join(''):'<p class="history-empty">读到想留下的地方，点阅读页右上角的书签。</p>'}</section><div class="record-tools"><button class="button secondary" id="export-records">导出阅读记录</button><button class="button secondary" id="import-records">导入阅读记录</button></div><p class="help-text">阅读进度、书签和设置只保存在当前浏览器，不会自动跨设备同步。<br>换设备或清理浏览器前，可以导出记录；在新设备导入即可继续读。</p>`);
   $$('[data-bookmark]').forEach(node=>node.addEventListener('click',()=>{
     const mark=getState().bookmarks.find(b=>b.id===node.dataset.bookmark);
     if (mark) pendingAnchor={bookId:mark.bookId,chapterId:mark.chapterId,record:{...mark,ratio:.5}};
@@ -160,19 +164,43 @@ function saveCurrent() {
   reader.lastAnchor=anchor;
   saveRecord(reader.book.id,{chapterId:reader.chapter.id,...anchor,updatedAt:Date.now()});
 }
+async function fetchChapter(bookId,chapterId) {
+  const key=`${bookId}/${chapterId}`;
+  if(chapterCache.has(key))return chapterCache.get(key);
+  if(chapterInFlight.has(key))return chapterInFlight.get(key);
+  const task=(async()=>{
+    const preload=window.__preloadChapter;
+    if(preload?.key===key){
+      window.__preloadChapter=null;
+      try {
+        const res=await preload.promise;
+        if(res&&res.ok){
+          const data=await res.json();
+          if(Array.isArray(data?.blocks)){chapterCache.set(key,data);return data;}
+        }
+      } catch {}
+    }
+    const response=await fetch(`./data/${bookId}/${chapterId}.json`);
+    if(!response.ok)throw new Error('chapter not found');
+    const data=await response.json();
+    if(!Array.isArray(data?.blocks))throw new Error('invalid chapter');
+    chapterCache.set(key,data);
+    return data;
+  })().finally(()=>chapterInFlight.delete(key));
+  chapterInFlight.set(key,task);
+  return task;
+}
+function prefetchChapter(book,chapter) {
+  if(!book||!chapter)return;
+  const key=`${book.id}/${chapter.id}`;
+  if(chapterCache.has(key)||chapterInFlight.has(key))return;
+  fetchChapter(book.id,chapter.id).catch(()=>{});
+}
 async function renderReader(book,chapter,routeId) {
   main.innerHTML='<div class="loading"><span class="loading-moon" aria-hidden="true">☾</span><p>正在翻开这一章…</p></div>';
   let data;
-  const key=`${book.id}/${chapter.id}`;
   try {
-    if(chapterCache.has(key)) data=chapterCache.get(key);
-    else {
-      const response=await fetch(`./data/${book.id}/${chapter.id}.json`);
-      if(!response.ok)throw new Error('chapter not found');
-      data=await response.json();
-      if(!Array.isArray(data.blocks))throw new Error('invalid chapter');
-      chapterCache.set(key,data);
-    }
+    data=await fetchChapter(book.id,chapter.id);
   } catch {
     if(routeId===serial){document.body.classList.remove('reading','night');renderError('章节暂时加载失败。检查网络后可以重新试一次。',true);}return;
   }
@@ -182,7 +210,7 @@ async function renderReader(book,chapter,routeId) {
   const previous=book.chapters[index-1],next=book.chapters[index+1];
   const content=data.blocks.map((b,i)=>{
     const attr=`data-block="${i}"`;
-    if(b.type==='image')return `<figure class="chapter-illustration" ${attr}><a href="./assets/${esc(b.src)}" target="_blank" rel="noopener" aria-label="查看插图大图：${esc(b.alt)}"><img src="./assets/${esc(b.src)}" alt="${esc(b.alt)}" width="${Number(b.width)}" height="${Number(b.height)}" loading="lazy" decoding="async"></a><figcaption>${esc(b.alt)}</figcaption></figure>`;
+    if(b.type==='image')return `<figure class="chapter-illustration" ${attr}><a href="./assets/${esc(b.src)}" target="_blank" rel="noopener" aria-label="查看插图大图：${esc(b.alt)}"><img src="./assets/${esc(b.thumb||b.src)}" alt="${esc(b.alt)}" width="${Number(b.width)}" height="${Number(b.height)}" loading="lazy" decoding="async"></a><figcaption>${esc(b.alt)}</figcaption></figure>`;
     if(b.type==='hr')return `<hr ${attr}>`;
     if(b.type==='heading')return `<h2 ${attr}>${esc(b.text)}</h2>`;
     if(b.type==='quote')return `<blockquote ${attr}>${inlineText(b.text)}</blockquote>`;
@@ -210,6 +238,7 @@ async function renderReader(book,chapter,routeId) {
   restoreAnchor(resume?.chapterId===chapter.id || !resume?.chapterId ? resume : null);
   reader.ready=true;
   updateReadingIndicator();saveCurrent();
+  if(next)(window.requestIdleCallback||(fn=>setTimeout(fn,600)))(()=>{if(routeId===serial)prefetchChapter(book,next);});
 }
 function syncSettingsForm() {
   const s=getState().settings,form=$('#settings-form');
@@ -288,8 +317,16 @@ window.addEventListener('keydown',e=>{
 });
 async function boot() {
   try {
-    const response=await fetch('./data/catalog.json');if(!response.ok)throw new Error();
-    catalog=await response.json();if(!Array.isArray(catalog)||!catalog.length)throw new Error();
+    let loaded=null;
+    const inline=document.getElementById('catalog-data')?.textContent;
+    if(inline&&inline.trim()){
+      try { const parsed=JSON.parse(inline); if(Array.isArray(parsed)&&parsed.length)loaded=parsed; } catch {}
+    }
+    if(!loaded){
+      const response=await fetch('./data/catalog.json');if(!response.ok)throw new Error();
+      loaded=await response.json();if(!Array.isArray(loaded)||!loaded.length)throw new Error();
+    }
+    catalog=loaded;
     // Put the opening story first without coupling later additions to folder order.
     catalog.sort((a,b)=>Number(Boolean(a.sample))-Number(Boolean(b.sample))||b.updated.localeCompare(a.updated)||(a.id==='rain-before-dawn'?-1:b.id==='rain-before-dawn'?1:a.title.localeCompare(b.title,'zh-CN')));
     await route();

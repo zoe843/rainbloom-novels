@@ -27,3 +27,8 @@ test('Windows text and ordinary old chapters retain their paragraph structure', 
   assert.equal(chapter.title,'旧章');
   assert.deepEqual(chapter.blocks.map(b=>b.type),['paragraph','quote','hr','paragraph']);
 });
+
+test('parseChapter rejects empty prose and missing top heading', () => {
+  assert.throws(()=>parseChapter('没有标题\n\n正文。'),/章节第一行/);
+  assert.throws(()=>parseChapter('# 有标题\n\n---'),/正文/);
+});

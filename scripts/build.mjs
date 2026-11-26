@@ -1,4 +1,5 @@
-import { readFile, writeFile, mkdir, cp, readdir, rm } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, cp, readdir, rm, access } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -8,6 +9,13 @@ const content = path.join(root, 'content');
 const idPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const assert = (ok, message) => { if (!ok) throw new Error(message); };
 const string = (v) => typeof v === 'string' && v.trim().length > 0;
+const shortHash = (text) => createHash('sha256').update(text).digest('hex').slice(0, 8);
+const exists = async (filePath) => { try { await access(filePath); return true; } catch { return false; } };
+const safeJsonForHtml = (value) => JSON.stringify(value)
+  .replace(/<\//g, '<\\/')
+  .replace(/<!--/g, '<\\!--')
+  .replace(/\u2028/g, '\\u2028')
+  .replace(/\u2029/g, '\\u2029');
 
 export function parseChapter(source) {
   const normalized = source.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').trim();
@@ -59,18 +67,56 @@ async function build() {
         await readFile(path.join(root, 'assets', block.src));
         block.width = dimensions.width;
         block.height = dimensions.height;
+        if (await exists(path.join(root, 'assets', 'inline', block.src))) {
+          block.thumb = `inline/${block.src}`;
+        }
       }
       chapters.push({ id: ch.id, title: parsed.title, wordCount: parsed.wordCount });
       chapterOutputs.push({ file: path.join(out, 'data', book.id, `${ch.id}.json`), data: { id: ch.id, ...parsed } });
     }
-    catalog.push({ ...book, chapters, wordCount: chapters.reduce((n,c) => n+c.wordCount, 0) });
+    const { images: _images, ...bookMeta } = book;
+    const catalogEntry = { ...bookMeta, chapters, wordCount: chapters.reduce((n,c) => n+c.wordCount, 0) };
+    if (await exists(path.join(root, 'assets', 'covers', book.cover))) {
+      catalogEntry.coverThumb = `covers/${book.cover}`;
+    }
+    catalog.push(catalogEntry);
   }
   assert(catalog.length > 0, '书架不能为空');
   // out is a fixed child of this repository, never a caller-supplied path.
   await rm(out, { recursive: true, force: true });
   await mkdir(path.join(out, 'data'), { recursive: true });
   await cp(path.join(root, 'assets'), path.join(out, 'assets'), { recursive: true });
-  await cp(path.join(root, 'index.html'), path.join(out, 'index.html'));
+
+  const [storageSrc, appSrc, styleSrc, indexHtml] = await Promise.all([
+    readFile(path.join(root, 'assets', 'storage.js'), 'utf8'),
+    readFile(path.join(root, 'assets', 'app.js'), 'utf8'),
+    readFile(path.join(root, 'assets', 'style.css'), 'utf8'),
+    readFile(path.join(root, 'index.html'), 'utf8'),
+  ]);
+  const storageBody = storageSrc.replace(/^\uFEFF/, '').replace(/^export\s+/gm, '');
+  const appBody = appSrc.replace(/^\uFEFF/, '').replace(/^\s*import\s+\{[^}]+\}\s+from\s+['"]\.\/storage\.js['"];?\r?\n?/, '');
+  const bundleJs = `(() => {\n'use strict';\n${storageBody}\n${appBody}\n})();\n`;
+  const jsHash = shortHash(bundleJs);
+  const cssHash = shortHash(styleSrc);
+  await writeFile(path.join(out, 'assets', `bundle.${jsHash}.js`), bundleJs);
+  await writeFile(path.join(out, 'assets', `style.${cssHash}.css`), styleSrc);
+
+  const bootHead = [
+    '<script>',
+    '(()=>{const o="https://zoe843.github.io/rainbloom-novels/";',
+    'if(location.protocol==="file:"){const t=o+location.hash;document.addEventListener("DOMContentLoaded",()=>{const m=document.querySelector(".loading > p"),a=document.querySelector(".loading a");if(m)m.textContent="正在打开在线书阁…";if(a)a.href=t;});location.replace(t);return;}',
+    'const m=location.hash.match(/^#\\/?read\\/([a-z0-9]+(?:-[a-z0-9]+)*)\\/([a-z0-9]+(?:-[a-z0-9]+)*)$/);',
+    'if(m){window.__preloadChapter={key:m[1]+"/"+m[2],promise:fetch("./data/"+m[1]+"/"+m[2]+".json")};}',
+    'window.__bookLoadFail=()=>{const main=document.querySelector("#main");if(!main)return;const box=document.createElement("div");box.className="empty";const h=document.createElement("h2");h.textContent="书阁暂时没有打开";const p=document.createElement("p");p.textContent="阅读脚本没有加载成功，请检查网络后重新加载。";const b=document.createElement("button");b.className="button secondary";b.textContent="重新加载";b.addEventListener("click",()=>location.reload());box.append(h,p,b);main.replaceChildren(box);};',
+    '})();',
+    '</script>',
+    `<script defer src="./assets/bundle.${jsHash}.js" onerror="window.__bookLoadFail&&window.__bookLoadFail()"></script>`,
+  ].join('');
+  const builtHtml = indexHtml
+    .replace('./assets/style.css', `./assets/style.${cssHash}.css`)
+    .replace('<script defer src="./assets/entry.js"></script>', bootHead)
+    .replace('</body>', `<script id="catalog-data" type="application/json">${safeJsonForHtml(catalog)}</script>\n</body>`);
+  await writeFile(path.join(out, 'index.html'), builtHtml);
   await writeFile(path.join(out, '.nojekyll'), '');
   await writeFile(path.join(out, 'data', 'catalog.json'), JSON.stringify(catalog));
   for (const ch of chapterOutputs) {
