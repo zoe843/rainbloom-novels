@@ -1,0 +1,200 @@
+{
+  "id": "cold-arc",
+  "title": "冷弧",
+  "author": "花庭藏稿",
+  "subtitle": "十一月干冷的 50Hz 嗡鸣里，旧西翼配电门后悄然划过的冷弧，把四名女高中生锁进了互不相容的五天。",
+  "description": "十一月的北关东，干燥得连空气都像绷紧的铁丝。县立绀原女子高中西翼紧邻一座停用的 500kV 超高压试验站，教室顶棚坏掉的日光灯日夜发出细微的 50Hz 嗡鸣。一封寄往教务处的匿名质疑条撕开了高二女生佐伯凪与年级第一神崎真昼之间的防线，夹在中间的朝仓栞也在一个狂风夜彻底失踪。从那晚起，班里无人直视的空座位、铁门缝里的苍白手腕、玻璃窗前闪现的电视双影，以及对不上账的记事本，把四人拖进彼此矛盾的死角——直到推开那扇积满干灰的暗红配电门，废弃器材室里一直亮着的示波器绿光才终于显出它冷酷的真相。",
+  "tags": [
+    "日系轻文学",
+    "电波悬疑",
+    "科幻中长篇"
+  ],
+  "status": "已完结",
+  "updated": "2026-11-27",
+  "cover": "cold-arc.webp",
+  "sample": false,
+  "chapters": [
+    {
+      "id": "chapter-01",
+      "file": "01.md"
+    },
+    {
+      "id": "chapter-02",
+      "file": "02.md"
+    },
+    {
+      "id": "chapter-03",
+      "file": "03.md"
+    },
+    {
+      "id": "chapter-04",
+      "file": "04.md"
+    },
+    {
+      "id": "chapter-05",
+      "file": "05.md"
+    },
+    {
+      "id": "chapter-06",
+      "file": "06.md"
+    },
+    {
+      "id": "chapter-07",
+      "file": "07.md"
+    },
+    {
+      "id": "chapter-08",
+      "file": "08.md"
+    },
+    {
+      "id": "chapter-09",
+      "file": "09.md"
+    },
+    {
+      "id": "chapter-10",
+      "file": "10.md"
+    },
+    {
+      "id": "chapter-11",
+      "file": "11.md"
+    }
+  ],
+  "images": {
+    "cold-arc-01-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-01-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-01-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-02-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-02-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-03-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-03-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-03-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-04-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-04-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-05-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-05-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-05-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-05-04.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-06-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-06-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-06-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-07-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-07-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-08-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-08-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-08-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-08-04.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-09-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-09-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-09-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-09-04.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-10-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-10-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-10-03.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-10-04.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-11-01.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-11-02.webp": {
+      "width": 1672,
+      "height": 941
+    },
+    "cold-arc-11-03.webp": {
+      "width": 1672,
+      "height": 941
+    }
+  }
+}
